@@ -1,0 +1,254 @@
+AssetUuid: 11699142250747900258
+Scene:
+  Uuid: 768582904146744010
+  Name: Scene
+Entities:
+  - Entity: 6393798526360931090
+    Name: CameraEntity
+    ParentID: 4413073585654535239
+    Components:
+      TransformComponent:
+        Position: [0, 0.80400002, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
+      CameraComponent:
+        Uuid: 6393798526360931090
+        Position: [0, 10.5959997, 0]
+        FOV: 60
+        FarPlane: 15000
+        NearPlane: 0.00999999978
+        AspectRatio: 1
+        MainCamera: false
+        Pitch: 0
+        Yaw: -90
+  - Entity: 768582904146744010
+    Name: Scene
+    ParentID: 768582904146744010
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
+  - Entity: 4413073585654535239
+    Name: Player
+    ParentID: 768582904146744010
+    Components:
+      TransformComponent:
+        Position: [0, 9.79199982, 475.893982]
+        Rotation: [0, 1.57045102, 0]
+        Scale: [1, 1, 1]
+      ColliderComponent:
+        Uuid: 4413073585654535239
+        Shapes:
+          - Shape: 0
+            MeshUuid: 0
+      RigidBodyComponent:
+        Uuid: 4413073585654535239
+        DynamicLockFlags: 56
+        ContinuousDetection: true
+      CsScriptComponent:
+        Uuid: 4413073585654535239
+        Scripts:
+          - Name: CharacterController
+            Path: \Assets\Scripts\CharacterController.cs
+            Uuid: 4413073585654535239
+            SerializedFields:
+              - Name: bookIdlePosition
+                Access: 6
+                Type: 17
+              - Name: gravity
+                Value: -9.81000042
+                Access: 6
+                Type: 12
+              - Name: sensitivity
+                Value: 0.300000012
+                Access: 6
+                Type: 12
+              - Name: bookIdleScale
+                Access: 6
+                Type: 17
+              - Name: speed
+                Value: 500000
+                Access: 6
+                Type: 12
+              - Name: bookReadPosition
+                Access: 6
+                Type: 17
+              - Name: maxSlopeAngle
+                Value: 45
+                Access: 6
+                Type: 12
+              - Name: bookReadScale
+                Access: 6
+                Type: 17
+              - Name: startPosition
+                Access: 6
+                Type: 17
+              - Name: terrainUuid
+                Value: 0
+                Access: 6
+                Type: 11
+              - Name: lerpSpeed
+                Value: 0.00999999978
+                Access: 6
+                Type: 12
+              - Name: lerpTime
+                Value: 1
+                Access: 6
+                Type: 12
+              - Name: lastFrameRightButtonPressed
+                Value: false
+                Access: 1
+                Type: 2
+  - Entity: 15466548454261842707
+    Name: book
+    ParentID: 7846242250408038473
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
+      MeshRendererComponent:
+        Uuid: 15466548454261842707
+        CastShadows: true
+        AiMeshName: ""
+        MeshName: ""
+        Instanced: true
+        MeshId: 11888746542358569633
+        Material: 13244522608001503917
+      ColliderComponent:
+        Uuid: 15466548454261842707
+        Shapes:
+          - Shape: 5
+            MeshUuid: 11888746542358569633
+  - Entity: 7846242250408038473
+    Name: page
+    ParentID: 6393798526360931090
+    Components:
+      TransformComponent:
+        Position: [0.170000002, 0, 0]
+        Rotation: [1.57079637, -0, 1.57079637]
+        Scale: [8, 6, 0.200000003]
+      MeshRendererComponent:
+        Uuid: 7846242250408038473
+        CastShadows: true
+        AiMeshName: ""
+        MeshName: ""
+        Instanced: true
+        MeshId: 2239155763765857396
+        Material: 6765122244075330397
+      ColliderComponent:
+        Uuid: 7846242250408038473
+        Shapes:
+          - Shape: 5
+            MeshUuid: 2239155763765857396
+  - Entity: 16751089037239813538
+    Name: Sphere
+    ParentID: 768582904146744010
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
+      MeshRendererComponent:
+        Uuid: 16751089037239813538
+        CastShadows: true
+        AiMeshName: ""
+        MeshName: ""
+        Instanced: true
+        MeshId: 2
+        Material: 0
+      ColliderComponent:
+        Uuid: 16751089037239813538
+        Shapes:
+          - Shape: 1
+            MeshUuid: 0
+  - Entity: 725423742878978801
+    Name: Terrain
+    ParentID: 768582904146744010
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [1.57079637, -0, 0]
+        Scale: [15000, 20000, 3000]
+      MeshRendererComponent:
+        Uuid: 725423742878978801
+        CastShadows: true
+        AiMeshName: ""
+        MeshName: ""
+        Instanced: true
+        MeshId: 339647705438437641
+        Material: 17611870980403807396
+      ColliderComponent:
+        Uuid: 725423742878978801
+        Shapes:
+          - Shape: 5
+            MeshUuid: 339647705438437641
+  - Entity: 5224631618254368411
+    Name: Cube
+    ParentID: 768582904146744010
+    Components:
+      TransformComponent:
+        Position: [0, 38.3403091, 0]
+        Rotation: [0, -0, 0]
+        Scale: [25, 1, 25]
+      MeshRendererComponent:
+        Uuid: 5224631618254368411
+        CastShadows: true
+        AiMeshName: ""
+        MeshName: ""
+        Instanced: true
+        MeshId: 1
+        Material: 0
+      ColliderComponent:
+        Uuid: 5224631618254368411
+        Shapes:
+          - Shape: 0
+            MeshUuid: 0
+  - Entity: 9504367141088930534
+    Name: Entity
+    ParentID: 14829735431805717965
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
+  - Entity: 9504367141088930534
+    Name: Entity
+    ParentID: 14829735431805717965
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
+Models:
+  - Model: 15985258263282279346
+    ModelPath: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Assets\Models\bookModel\book2.plzmod
+  - Model: 4662315338364004944
+    ModelPath: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Assets\Models\terrains\terrain.plzmod
+Meshes:
+  - Mesh: 11888746542358569633
+    MeshId: 11888746542358569633
+    Name: ""
+    TemporaryMesh: false
+    ModelUuid: 14829735431805717965
+  - Mesh: 2239155763765857396
+    MeshId: 2239155763765857396
+    Name: ""
+    TemporaryMesh: false
+    ModelUuid: 14829735431805717965
+  - Mesh: 2
+    MeshId: 2
+    Name: ""
+    TemporaryMesh: false
+    ModelUuid: 14829735431805717965
+  - Mesh: 339647705438437641
+    MeshId: 339647705438437641
+    Name: ""
+    TemporaryMesh: false
+    ModelUuid: 14829735431805717965
+  - Mesh: 1
+    MeshId: 1
+    Name: ""
+    TemporaryMesh: false
+    ModelUuid: 14829735431805717965

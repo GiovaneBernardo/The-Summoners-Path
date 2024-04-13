@@ -1,0 +1,20 @@
+AssetUuid: 6923247196369955319
+Material: Unnamed
+Uuid: 16655020260187527037
+diffuse:
+  Type: diffuse
+  Path: ""
+  Rgba: [255, 255, 255, 255]
+specular:
+  Type: specular
+  Path: ""
+  Rgba: [255, 255, 255, 255]
+height:
+  Type: height
+  Path: ""
+  Rgba: [255, 255, 255, 255]
+normal:
+  Type: normal
+  Path: ""
+  Rgba: [255, 255, 255, 255]
+Shininess: 3
