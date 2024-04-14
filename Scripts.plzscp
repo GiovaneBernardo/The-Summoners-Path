@@ -1,6 +1,10 @@
 Script Manager Path: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Scripts.plzscp
 Scripts:
+  - Script: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Assets\Scripts\BookManager.cs
+    Date: 20240413164940.0723404
   - Script: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Assets\Scripts\CharacterController.cs
-    Date: 20240413014459.4603539
+    Date: 20240413164940.0723691
   - Script: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Assets\Scripts\Unnamed.cs
-    Date: 20240413014523.5203576
+    Date: 20240413165244.1326476
+  - Script: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Intermediates\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs
+    Date: 20240413164940.0727409

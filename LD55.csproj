@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\BookManager.cs" />
     <Compile Include="Assets\Scripts\CharacterController.cs" />
+    <Compile Include="Assets\Scripts\TrucksManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Materials\" />

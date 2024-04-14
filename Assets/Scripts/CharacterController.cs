@@ -12,19 +12,32 @@ using static Plaza.Physics;
 
 public class CharacterController : Entity
 {
-    public float gravity = -79.81f;
+    public float gravity = -9.81f;
     public float totalGravity = 0.0f;
     public float sensitivity = 0.3f;
-    public float speed = 3000000.0f;
+    public float speed = 8.0f;
+    public float jumpHeight = 40.0f;
     public float maxSlopeAngle = 45;
+    public float moveSpeed = 18.0f;
+    public float groundDrag = 5.0f;
+    public float jumpForce = 1300.0f;
+    public float airMultiplier = 1.3f;
     public Vector3 bookIdlePosition = new Vector3(0.3f, -0.15f, 0.2f);
     public Vector3 bookIdleScale = new Vector3(6.67f, 5.0f, 0.1f);
     public Vector3 bookReadPosition = new Vector3(0.170, 0.0f, 0.0f);
     public Vector3 bookReadScale = new Vector3(8.0f, 6.0f, 0.2f);
     public Vector3 startPosition = new Vector3(0.0f, 9.792f, 475.89f);
     public UInt64 terrainUuid = 0;
-    public float truckHeight = 5.0f;
+    public UInt64 previewUuid = 0;
+    public float heightSpawn = 50.0f;
     public DateTime lastJumpTime;
+    public DateTime lastSummonTime;
+    public DateTime startTime;
+    public int maxSeconds = 60;
+
+    public UInt64 errorMaterialUuid = 1654307431041515234;
+    public UInt64 previewMaterialUuid = 2522693449534569271;
+
 
     public Vector3 LerpVector(Vector3 start, Vector3 end, float time)
     {
@@ -36,37 +49,97 @@ public class CharacterController : Entity
     bool lastFrameRightButtonPressed = false;
     public void OnStart()
     {
+        gravity = -9.81f;
+        totalGravity = 0.0f;
+        sensitivity = 0.3f;
+        speed = 24000.0f;
+        jumpHeight = 40.0f;
+        maxSlopeAngle = 45;
+        moveSpeed = 18.0f;
+        groundDrag = 5.0f;
+        jumpForce = 1300.0f;
+        airMultiplier = 1.3f;
+        heightSpawn = 60.0f;
+        maxSeconds = 60;
+
+
         Cursor.Hide();
         terrainUuid = FindEntityByName("Terrain").Uuid;
-    }
+        previewUuid = FindEntityByName("FlyingObjectPreviewHolder").Uuid;
 
+        this.AddComponent<TextRenderer>();
+        startTime = DateTime.Now;
+    }
+    public bool canRespawn = false;
     public void OnUpdate()
     {
-        speed = 3000000.0f;
-        gravity = -79.81f;
 
+        this.GetComponent<TextRenderer>().SetText((maxSeconds - (DateTime.Now - startTime).TotalSeconds).ToString(), 0, 0, 3);
+        if ((startTime - DateTime.Now).TotalSeconds < -maxSeconds)
+            canRespawn = true;
 
-        MovePlayer();
-        RotateCamera();
+        if (canRespawn)
+        {
+            this.GetComponent<RigidBody>().ApplyForce(new Vector3(0.0f));
+            this.GetComponent<Transform>().Translation = startPosition;
 
-        HandleBook();
+            startTime = DateTime.Now;
+            canRespawn = false;
+        }
+        else
+        {
+            MovePlayer();
+            RotateCamera();
+            SpeedControl();
+
+            HandleBook();
+        }
     }
 
     public void HandleBook()
     {
+        bool isSummonCooldownOver = (lastSummonTime - DateTime.Now).TotalSeconds < -1.0f;
+
         RaycastHit hit;
-        Physics_Raycast(this.GetComponent<Transform>().Translation + FindEntityByName("CameraEntity").GetComponent<Transform>().Translation, FindEntityByName("CameraEntity").GetComponent<Transform>().LeftVector * new Vector3(-1.0f), 10000.0f, out hit, this.Uuid);
-        /* Spawn trucks */
-        if (Input.IsMouseDown(0))
+        Physics_Raycast(this.GetComponent<Transform>().Translation + FindEntityByName("CameraEntity").GetComponent<Transform>().Translation, FindEntityByName("CameraEntity").GetComponent<Transform>().LeftVector * new Vector3(-1.0f), 10000.0f, out hit, previewUuid);
+        /* Spawn swords */
+        if (isSummonCooldownOver && Input.IsMouseDown(0))
         {
-            //FindEntityByName("Sphere").GetComponent<Transform>().Translation = this.GetComponent<Transform>().Translation + (new Vector3(5.0f, 0.0f, 0.0f) * FindEntityByName("CameraEntity").GetComponent<Transform>().Rotation);
             Console.WriteLine(hit.hitUuid);
             if (hit.hitUuid == terrainUuid)
-                Instantiate(FindEntityByName("Truck")).GetComponent<Transform>().Translation = new Entity(hit.hitUuid).GetComponent<Transform>().Translation + hit.point + new Vector3(0.0f, truckHeight, 0.0f);
+            {
+                Entity newTruck = Instantiate(FindEntityByName("SwordSample"));
+                newTruck.GetComponent<Transform>().Translation = new Entity(hit.hitUuid).GetComponent<Transform>().Translation + hit.point + new Vector3(0.0f, heightSpawn, 0.0f);
+
+                InternalCalls.GetWorldRotationQuaternionCall(FindEntityByName("FlyingObjectPreviewSword").Uuid, out Vector4 rotation);
+                Quaternion rotationQuaternion = new Quaternion(rotation.X, rotation.Y, rotation.Z, rotation.W);
+                rotationQuaternion.Normalize();
+                newTruck.GetComponent<Transform>().Rotation = rotationQuaternion;
+
+                TravellerObjectsManager.flyingObjects.Add(newTruck.Uuid);
+                lastSummonTime = DateTime.Now;
+            }
         }
         else if (hit.hitUuid == terrainUuid)
-            FindEntityByName("TruckPreview").GetComponent<Transform>().Translation = new Entity(hit.hitUuid).GetComponent<Transform>().Translation + hit.point + new Vector3(0.0f, truckHeight, 0.0f);
+        {
+            FindEntityByName("FlyingObjectPreviewHolder").GetComponent<Transform>().Translation = new Entity(hit.hitUuid).GetComponent<Transform>().Translation + hit.point + new Vector3(0.0f, heightSpawn, 0.0f);
+            FindEntityByName("FlyingObjectPreviewHolder").GetComponent<Transform>().Rotation = this.GetComponent<Transform>().Rotation;
+        }
 
+        FindEntityByName("FlyingObjectPreviewSword").GetComponent<MeshRenderer>().SetMaterial(isSummonCooldownOver ? previewMaterialUuid : errorMaterialUuid);
+
+        ReadBook();
+
+        ThrowPower();
+    }
+
+    public void ThrowPower()
+    {
+
+    }
+
+    public void ReadBook()
+    {
         /* Lerp Positions */
         if (lastFrameRightButtonPressed)
             lerpTime += lerpSpeed * Time.deltaTime;
@@ -91,8 +164,9 @@ public class CharacterController : Entity
 
     public void OnCollide(UInt64 collidedUuid, Vector3 hitPosition)
     {
-        //if (collidedUuid == terrainUuid)
-        //    this.GetComponent<Transform>().Translation = startPosition;
+        if (collidedUuid == terrainUuid)
+            canRespawn = true;
+        //this.GetComponent<Transform>().Translation = startPosition;
     }
 
     public void OnRestart()
@@ -112,6 +186,10 @@ public class CharacterController : Entity
 
         RaycastHit hit;
         Physics_Raycast(this.GetComponent<Transform>().Translation, new Vector3(0.0f, -1.0f, 0.0f), 0.7f, out hit, this.Uuid);
+        MoveWithSword(hit);
+
+        if (hit.hitUuid == terrainUuid)
+            canRespawn = true;
 
         bool hittingGround = hit.hitUuid != 0;
 
@@ -133,32 +211,57 @@ public class CharacterController : Entity
         }
 
         force = this.GetComponent<Transform>().LeftVector * -vertical + this.GetComponent<Transform>().ForwardVector * horizontal;
-
-        if (!hittingGround)
-            force *= 1.0f / 10.0f;
+        force += new Vector3(0.0f, totalGravity, 0.0f);
 
         if (OnSlope(hit))
         {
-            this.GetComponent<RigidBody>().AddForce(GetSlopeMoveDirection(hit, force) * (Time.deltaTime), ForceMode.FORCE);
+            this.GetComponent<RigidBody>().AddForce(GetSlopeMoveDirection(hit, force), ForceMode.FORCE);
         }
         else
-            this.GetComponent<RigidBody>().AddForce(force * Time.deltaTime, ForceMode.FORCE);
+        {
+            if (hittingGround)
+                this.GetComponent<RigidBody>().AddForce(force, ForceMode.FORCE);
+            else
+                this.GetComponent<RigidBody>().AddForce(force * airMultiplier, ForceMode.FORCE);
+        }
 
         bool isCoolDownOver = (lastJumpTime - DateTime.Now).TotalSeconds < -1.0f;
         if (hittingGround)
         {
             totalGravity = gravity;
-            this.GetComponent<RigidBody>().drag = 7.0f;
+            this.GetComponent<RigidBody>().drag = groundDrag;
             if (Input.IsKeyDown(KeyCode.Space) && isCoolDownOver)
             {
-                this.GetComponent<RigidBody>().ApplyForce(new Vector3(0.0f, 40.0f, 0.0f));
+                //this.GetComponent<RigidBody>().ApplyForce(new Vector3(0.0f, jumpHeight, 0.0f));
+                Jump();
                 lastJumpTime = DateTime.Now;
             }
         }
         else
         {
             this.GetComponent<RigidBody>().drag = 0.0f;
-            totalGravity += gravity * Time.deltaTime;
+            totalGravity += gravity;
+        }
+
+    }
+
+    public void Jump()
+    {
+        RigidBody rigidBody = this.GetComponent<RigidBody>();
+        rigidBody.velocity = new Vector3(rigidBody.velocity.X, 0.0f, rigidBody.velocity.Z);
+
+        rigidBody.AddForce(new Vector3(0.0f, 1.0f, 0.0f) * jumpForce, ForceMode.IMPULSE);
+
+    }
+
+    public void SpeedControl()
+    {
+        Vector3 rigidBodyVelocity = this.GetComponent<RigidBody>().velocity;
+        Vector3 flatVelocity = new Vector3(rigidBodyVelocity.X, 0.0f, rigidBodyVelocity.Z);
+        if (Vector3.Magnitude(flatVelocity) > moveSpeed)
+        {
+            Vector3 limitedVelocity = Vector3.Normalize(flatVelocity) * moveSpeed;
+            this.GetComponent<RigidBody>().velocity = new Vector3(limitedVelocity.X, rigidBodyVelocity.Y, limitedVelocity.Z);
         }
     }
 
@@ -173,6 +276,14 @@ public class CharacterController : Entity
     private Vector3 GetSlopeMoveDirection(RaycastHit hit, Vector3 moveDirection)
     {
         return Vector3.ProjectOnPlane(moveDirection, hit.normal);
+    }
+
+    public void MoveWithSword(RaycastHit hit)
+    {
+
+        if (hit.hitUuid == 0 || InternalCalls.EntityGetName(hit.hitUuid) != "SwordSample")
+            return;
+        this.GetComponent<Transform>().Translation += new Entity(hit.hitUuid).GetComponent<Transform>().MoveTowardsReturn(new Vector3(0.0f, TravellerObjectsManager.flyingObjectsSpeed * Time.deltaTime, 0.0f));//new Entity(hit.hitUuid).GetComponent<Transform>().LeftVector * -1.0f * new Vector3(0.0f, 0.0f, TravellerObjectsManager.flyingObjectsSpeed * Time.deltaTime);
     }
 
     public void RotateCamera()
