@@ -91,6 +91,10 @@ Entities:
                 Value: -9.81000042
                 Access: 6
                 Type: 12
+              - Name: jumpCount
+                Value: 2
+                Access: 6
+                Type: 8
               - Name: previewUuid
                 Value: 0
                 Access: 6
@@ -246,7 +250,7 @@ Entities:
         Scale: [1, 1, 1]
       AudioSourceComponent:
         Uuid: 13134684138623118797
-        SourcePath: \\\\\Assets\Sounds\summonSwordSound.mp3
+        SourcePath: \\\\\\\\\\\Assets\Sounds\summonSwordSound.mp3
         Gain: 0.00999999978
         Pitch: 2
         Spatial: false
@@ -312,27 +316,6 @@ Entities:
         Position: [0, 0, 0]
         Rotation: [0, -0, 0]
         Scale: [1, 1, 1]
-  - Entity: 11548815623260674483
-    Name: Platform
-    ParentID: 768582904146744010
-    Components:
-      TransformComponent:
-        Position: [0, 5.82938099, 476.451019]
-        Rotation: [0, -0, 0]
-        Scale: [8, 1, 8]
-      MeshRendererComponent:
-        Uuid: 11548815623260674483
-        CastShadows: true
-        AiMeshName: ""
-        MeshName: ""
-        Instanced: true
-        MeshId: 1
-        Material: 0
-      ColliderComponent:
-        Uuid: 11548815623260674483
-        Shapes:
-          - Shape: 0
-            MeshUuid: 0
   - Entity: 16751089037239813538
     Name: Sphere
     ParentID: 768582904146744010
@@ -789,6 +772,21 @@ Entities:
         Shapes:
           - Shape: 1
             MeshUuid: 0
+  - Entity: 14870158141365769930
+    Name: JumpSoundEntity
+    ParentID: 10007800756297430997
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
+      AudioSourceComponent:
+        Uuid: 14870158141365769930
+        SourcePath: \\Assets\Sounds\jump.mp3
+        Gain: 0.100000001
+        Pitch: 2
+        Spatial: false
+        Loop: false
   - Entity: 8573830291456401669
     Name: RedBallHolder
     ParentID: 768582904146744010
@@ -878,7 +876,7 @@ Entities:
         Scale: [1, 1, 1]
       AudioSourceComponent:
         Uuid: 12625652768785621401
-        SourcePath: \\\\\\\Assets\Sounds\winSound.mp3
+        SourcePath: \\\\\\\\\\\\\Assets\Sounds\winSound.mp3
         Gain: 0.0500000007
         Pitch: 1
         Spatial: false
@@ -954,6 +952,14 @@ Entities:
         Position: [0, 0, 0]
         Rotation: [0, -0, 0]
         Scale: [1, 1, 1]
+  - Entity: 10572931208325334506
+    Name: Platform
+    ParentID: 768582904146744010
+    Components:
+      TransformComponent:
+        Position: [0, 5.829, 476.450989]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
   - Entity: 8009799921486579459
     Name: FallSoundEntity
     ParentID: 10007800756297430997
@@ -964,7 +970,7 @@ Entities:
         Scale: [1, 1, 1]
       AudioSourceComponent:
         Uuid: 8009799921486579459
-        SourcePath: \\\\\Assets\Sounds\fallSound.mp3
+        SourcePath: \\\\\\\\\\\Assets\Sounds\fallSound.mp3
         Gain: 0.150000006
         Pitch: 1
         Spatial: false
@@ -979,7 +985,7 @@ Entities:
         Scale: [1, 1, 1]
       AudioSourceComponent:
         Uuid: 11627643523831865723
-        SourcePath: \\\\\Assets\Sounds\deathSound.mp3
+        SourcePath: \\\\\\\\\\\Assets\Sounds\deathSound.mp3
         Gain: 0.0500000007
         Pitch: 1
         Spatial: false
@@ -994,7 +1000,7 @@ Entities:
         Scale: [1, 1, 1]
       AudioSourceComponent:
         Uuid: 6889282408530649007
-        SourcePath: \\\\\Assets\Sounds\hitSword.mp3
+        SourcePath: \\\\\\\\\\\Assets\Sounds\hitSword.mp3
         Gain: 0.0500000007
         Pitch: 1
         Spatial: false
@@ -1009,7 +1015,7 @@ Entities:
         Scale: [1, 1, 1]
       AudioSourceComponent:
         Uuid: 1155760567257938587
-        SourcePath: \\\\Assets\Sounds\music.mp3
+        SourcePath: \\\\\\\\\\Assets\Sounds\music.mp3
         Gain: 0.0500000007
         Pitch: 1
         Spatial: false
@@ -1024,11 +1030,32 @@ Entities:
         Scale: [1, 1, 1]
       AudioSourceComponent:
         Uuid: 9439302592781127647
-        SourcePath: \\Assets\Sounds\fireballSound.mp3
-        Gain: 0.200000003
+        SourcePath: \\\\\\\\Assets\Sounds\fireballSound.mp3
+        Gain: 0.0500000007
         Pitch: 1.29999995
         Spatial: false
         Loop: false
+  - Entity: 4301145415168643735
+    Name: Cylinder
+    ParentID: 10572931208325334506
+    Components:
+      TransformComponent:
+        Position: [0, -20, -5]
+        Rotation: [-1.57079637, -0, 0]
+        Scale: [2000, 2000, 2000]
+      MeshRendererComponent:
+        Uuid: 4301145415168643735
+        CastShadows: true
+        AiMeshName: ""
+        MeshName: ""
+        Instanced: true
+        MeshId: 9523995239997163055
+        Material: 18007994358709151320
+      ColliderComponent:
+        Uuid: 4301145415168643735
+        Shapes:
+          - Shape: 5
+            MeshUuid: 9523995239997163055
 Models:
   - Model: 15985258263282279346
     ModelPath: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Assets\Models\bookModel\book2.plzmod
@@ -1040,6 +1067,8 @@ Models:
     ModelPath: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Assets\Models\cactus\Cattus_LowPoly.plzmod
   - Model: 3708068673641951050
     ModelPath: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Assets\Models\sword\sword.plzmod
+  - Model: 11186572778499527135
+    ModelPath: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Assets\Models\platform\stonePlatform.plzmod
   - Model: 10857838889308823430
     ModelPath: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Assets\Models\terrains\terrain2\terrain2.plzmod
   - Model: 4083901518025559321
@@ -1082,11 +1111,6 @@ Meshes:
     ModelUuid: 14829735431805717965
   - Mesh: 7908995314450700260
     MeshId: 7908995314450700260
-    Name: ""
-    TemporaryMesh: false
-    ModelUuid: 14829735431805717965
-  - Mesh: 1
-    MeshId: 1
     Name: ""
     TemporaryMesh: false
     ModelUuid: 14829735431805717965
@@ -1182,6 +1206,11 @@ Meshes:
     ModelUuid: 14829735431805717965
   - Mesh: 7908995314450700260
     MeshId: 7908995314450700260
+    Name: ""
+    TemporaryMesh: false
+    ModelUuid: 14829735431805717965
+  - Mesh: 9523995239997163055
+    MeshId: 9523995239997163055
     Name: ""
     TemporaryMesh: false
     ModelUuid: 14829735431805717965

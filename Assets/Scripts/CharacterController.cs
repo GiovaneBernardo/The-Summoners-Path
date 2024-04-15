@@ -16,7 +16,7 @@ public class CharacterController : Entity
     public static int swordsCount = 8;
     public float gravity = -9.81f;
     public float totalGravity = 0.0f;
-    public float sensitivity = 0.3f;
+    public float sensitivity = 0.1f;
     public float speed = 8.0f;
     public float jumpHeight = 40.0f;
     public float maxSlopeAngle = 45;
@@ -27,7 +27,7 @@ public class CharacterController : Entity
     public Vector3 bookIdlePosition = new Vector3(0.3f, -0.15f, 0.2f);
     public Vector3 bookIdleScale = new Vector3(6.67f, 5.0f, 0.1f);
     public Vector3 bookReadPosition = new Vector3(0.170, 0.0f, 0.0f);
-    public Vector3 bookReadScale = new Vector3(8.0f, 6.0f, 0.2f);
+    public Vector3 bookReadScale = new Vector3(4.0f, 3.0f, 0.2f);
     public Vector3 startPosition = new Vector3(0.0f, 9.792f, 475.89f);
     public UInt64 terrainUuid = 0;
     public UInt64 previewUuid = 0;
@@ -37,7 +37,7 @@ public class CharacterController : Entity
     public DateTime lastSummonTime;
     public DateTime lastBallSummonTime;
     public DateTime startTime;
-    public TimeSpan bestTime;
+    public TimeSpan bestTime = new TimeSpan(0);
     public int winCount = 0;
     public int maxSeconds = 180;
 
@@ -50,8 +50,8 @@ public class CharacterController : Entity
     public Vector3 platformPosition = new Vector3(0.0f, 5.829f, 476.451f);
     public Vector3 endPosition = new Vector3(-120, -51, -665);
 
-    public Vector2 swordsCountTextPos = new Vector2(0.0f, 50.0f);
-    public Vector2 bestTimeTextPos = new Vector2(0.0f, 100.0f);
+    public Vector2 swordsCountTextPos = new Vector2(0.0f, 0.0f);
+    public Vector2 bestTimeTextPos = new Vector2(0.0f, 50.0f);
     public Vector2 sensitivityTextPos = new Vector2(0.0f, 500.0f);
 
     public Vector3 LerpVector(Vector3 start, Vector3 end, float time)
@@ -68,11 +68,12 @@ public class CharacterController : Entity
     public bool showMenu = true;
 
     public bool airJumpAvailable = true;
+    public int jumpCount = 2;
     public void OnStart()
     {
         gravity = -9.81f;
         totalGravity = 0.0f;
-        sensitivity = 0.3f;
+        sensitivity = 0.1f;
         speed = 24000.0f;
         jumpHeight = 40.0f;
         maxSlopeAngle = 45;
@@ -84,6 +85,12 @@ public class CharacterController : Entity
         maxSeconds = 180;
 
         lerpSpeed = 0.07f;
+
+        //bookIdlePosition = new Vector3(0.3f, -0.15f, 0.2f);
+        //bookIdleScale = new Vector3(6.0f, 3.0f, 0.1f);
+        //bookReadPosition = new Vector3(0.170, 0.0f, 0.0f);
+        //bookReadScale = new Vector3(6.0f, 3.0f, 0.2f);
+        //startPosition = new Vector3(0.0f, 9.792f, 475.89f);
 
         Cursor.Hide();
         terrainUuid = FindEntityByName("Terrain").Uuid;
@@ -106,19 +113,19 @@ public class CharacterController : Entity
     {
          if (showMenu)
          {
-             if (Input.IsKeyDown(KeyCode.Uknown))
+             if (Input.IsAnyKeyPressed() || Input.IsMouseDown(0))
              {
                  ReadBook();
                  showMenu = false;
              }
             return;
          }
-        this.GetComponent<TextRenderer>().SetText((maxSeconds - (DateTime.Now - startTime).TotalSeconds).ToString(), 0, 0, 3);
+        //this.GetComponent<TextRenderer>().SetText((maxSeconds - (DateTime.Now - startTime).TotalSeconds).ToString(), 0, 0, 3);
         FindEntityByName("SwordsCountText").GetComponent<TextRenderer>().SetText("Swords: " + swordsCount.ToString(), swordsCountTextPos.X, swordsCountTextPos.Y, 3);
         if (winCount > 0)
-            FindEntityByName("BestTimeText").GetComponent<TextRenderer>().SetText("Best Time: " + bestTime.ToString(), bestTimeTextPos.X, bestTimeTextPos.Y, 3);
+            FindEntityByName("BestTimeText").GetComponent<TextRenderer>().SetText("Best Time: " + ((decimal)bestTime.TotalSeconds).ToString("F2") + "s", bestTimeTextPos.X, bestTimeTextPos.Y, 3);
 
-        if ((startTime - DateTime.Now).TotalSeconds < -maxSeconds || CharacterController.swordsCount <= 0 || this.GetComponent<Transform>().Translation.Y < -100.0f)
+        if (CharacterController.swordsCount <= -1 || this.GetComponent<Transform>().Translation.Y < -100.0f) //(startTime - DateTime.Now).TotalSeconds < -maxSeconds || 
             canRespawn = true;
 
         if (canRespawn)
@@ -151,7 +158,7 @@ public class CharacterController : Entity
         //}
 
         // Move the platform away if player moved
-        if (platformIsOnStart && Vector3.Distance(this.GetComponent<Transform>().Translation, platformPosition) > 10.0f)
+        if (platformIsOnStart && Vector3.Distance(this.GetComponent<Transform>().Translation, platformPosition) > 25.0f)
         {
             FindEntityByName("Platform").GetComponent<Transform>().Translation = new Vector3(0.0f, -1000.0f, 0.0f);
             platformIsOnStart = false;
@@ -188,10 +195,15 @@ public class CharacterController : Entity
         InternalCalls.AudioSource_Play(FindEntityByNameCall("UsePowerSoundEntity"));
     }
 
+    public static void PlayJumpSound()
+    {
+        InternalCalls.AudioSource_Play(FindEntityByNameCall("JumpSoundEntity"));
+    }
+
     public void Win()
     {
         PlayWinSound();
-        bestTime = DateTime.Now - startTime;
+        bestTime = (DateTime.Now - startTime).TotalSeconds < bestTime.TotalSeconds || bestTime == new TimeSpan(0)  ? (DateTime.Now - startTime) : bestTime;
         winCount++;
 
         if (winCount == 1)
@@ -240,7 +252,7 @@ public class CharacterController : Entity
 
         }
 
-        FindEntityByName("FlyingObjectPreviewSword").GetComponent<MeshRenderer>().SetMaterial(isSummonCooldownOver ? previewMaterialUuid : errorMaterialUuid);
+        FindEntityByName("FlyingObjectPreviewSword").GetComponent<MeshRenderer>().SetMaterial(isSummonCooldownOver && CharacterController.swordsCount > 0 ? previewMaterialUuid : errorMaterialUuid);
 
         ReadBook();
 
@@ -385,20 +397,24 @@ public class CharacterController : Entity
 
     public void HandleJump(bool hittingGround)
     {
-        bool isJumpCoolDownOver = (lastJumpTime - DateTime.Now).TotalSeconds < -1.0f;
+        bool isJumpCoolDownOver = (lastJumpTime - DateTime.Now).TotalSeconds < -0.4f;
+        if (isJumpCoolDownOver && hittingGround)
+            jumpCount = 2;
 
-        if (Input.IsKeyDown(KeyCode.Space) && isJumpCoolDownOver && (hittingGround || airJumpAvailable))
+        if (Input.IsKeyDown(KeyCode.Space) && isJumpCoolDownOver && jumpCount > 0)
         {
             //this.GetComponent<RigidBody>().ApplyForce(new Vector3(0.0f, jumpHeight, 0.0f));
             Jump();
             lastJumpTime = DateTime.Now;
             if (!hittingGround)
                 airJumpAvailable = false;
+            jumpCount--;
         }
     }
 
     public void Jump()
     {
+        PlayJumpSound();
         totalGravity = 0.0f;
         RigidBody rigidBody = this.GetComponent<RigidBody>();
         rigidBody.velocity = new Vector3(rigidBody.velocity.X, 0.0f, rigidBody.velocity.Z);
@@ -533,13 +549,13 @@ public class CharacterController : Entity
     {
         if (Input.IsKeyDown(KeyCode.PageUp))
         {
-            sensitivity = Clamp(sensitivity + (sensitivity * 0.10f * Time.deltaTime), 0.01f, 2.0f);
-            FindEntityByName("SensitivityText").GetComponent<TextRenderer>().SetText("Sensitivity: " + ((short)sensitivity).ToString(), sensitivityTextPos.X, sensitivityTextPos.Y, 1.5f);
+            sensitivity = Clamp(sensitivity + (Math.Max(sensitivity * 0.10f, 0.03f) * Time.deltaTime), 0.01f, 2.0f);
+            FindEntityByName("SensitivityText").GetComponent<TextRenderer>().SetText("Sensitivity: " + sensitivity.ToString("F3"), sensitivityTextPos.X, sensitivityTextPos.Y, 1.5f);;
         }
         else if (Input.IsKeyDown(KeyCode.PageDown))
         {
-            sensitivity = Clamp(sensitivity - (sensitivity * 0.10f * Time.deltaTime), 0.01f, 2.0f); ;
-            FindEntityByName("SensitivityText").GetComponent<TextRenderer>().SetText("Sensitivity: " + ((short)sensitivity).ToString(), sensitivityTextPos.X, sensitivityTextPos.Y, 1.5f); ;
+            sensitivity = Clamp(sensitivity - (Math.Max(sensitivity * 0.10f, 0.03f) * Time.deltaTime), 0.01f, 2.0f); ;
+            FindEntityByName("SensitivityText").GetComponent<TextRenderer>().SetText("Sensitivity: " + sensitivity.ToString("F3"), sensitivityTextPos.X, sensitivityTextPos.Y, 1.5f); ;
         }
     }
 }
