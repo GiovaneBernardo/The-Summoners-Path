@@ -2,7 +2,7 @@ AssetUuid: 11699142250747900258
 Scene:
   Uuid: 768582904146744010
   Name: Scene
-  LightDirection: [-0.0900000036, 0.400000006, -0.107000001]
+  LightDirection: [0.0900000036, 0.400000006, 0.107000001]
 Entities:
   - Entity: 6393798526360931090
     Name: CameraEntity
@@ -14,7 +14,7 @@ Entities:
         Scale: [1, 1, 1]
       CameraComponent:
         Uuid: 6393798526360931090
-        Position: [0, 11.2919998, 478.977844]
+        Position: [-4.67510366, 13.4122334, 428.150665]
         FOV: 60
         FarPlane: 15000
         NearPlane: 0.00999999978
@@ -30,6 +30,27 @@ Entities:
         Position: [0, 0, 0]
         Rotation: [0, -0, 0]
         Scale: [1, 1, 1]
+  - Entity: 7514399172964846562
+    Name: Cube
+    ParentID: 768582904146744010
+    Components:
+      TransformComponent:
+        Position: [-117.051849, -51.460186, -667.888611]
+        Rotation: [0, -0, 0]
+        Scale: [100, 100, 100]
+      MeshRendererComponent:
+        Uuid: 7514399172964846562
+        CastShadows: true
+        AiMeshName: ""
+        MeshName: ""
+        Instanced: true
+        MeshId: 2337531093440922106
+        Material: 5393430051130038616
+      ColliderComponent:
+        Uuid: 7514399172964846562
+        Shapes:
+          - Shape: 5
+            MeshUuid: 2337531093440922106
   - Entity: 4413073585654535239
     Name: Player
     ParentID: 768582904146744010
@@ -62,8 +83,12 @@ Entities:
                 Value: 0
                 Access: 6
                 Type: 12
+              - Name: platformIsOnStart
+                Value: false
+                Access: 6
+                Type: 2
               - Name: gravity
-                Value: -179.809998
+                Value: -981
                 Access: 6
                 Type: 12
               - Name: previewUuid
@@ -71,7 +96,7 @@ Entities:
                 Access: 6
                 Type: 11
               - Name: jumpForce
-                Value: 900
+                Value: 1300
                 Access: 6
                 Type: 12
               - Name: sensitivity
@@ -82,10 +107,18 @@ Entities:
                 Value: 0
                 Access: 6
                 Type: 11
+              - Name: winCount
+                Value: 0
+                Access: 6
+                Type: 8
               - Name: speed
                 Value: 8
                 Access: 6
                 Type: 12
+              - Name: airJumpAvailable
+                Value: true
+                Access: 6
+                Type: 2
               - Name: jumpHeight
                 Value: 40
                 Access: 6
@@ -107,7 +140,7 @@ Entities:
                 Access: 6
                 Type: 12
               - Name: airMultiplier
-                Value: 0.800000012
+                Value: 1.29999995
                 Access: 6
                 Type: 12
               - Name: bookIdlePosition
@@ -129,8 +162,12 @@ Entities:
                 Value: 0
                 Access: 6
                 Type: 11
+              - Name: towerUuid
+                Value: 0
+                Access: 6
+                Type: 11
               - Name: heightSpawn
-                Value: 50
+                Value: 100
                 Access: 6
                 Type: 12
               - Name: lastJumpTime
@@ -143,6 +180,9 @@ Entities:
                 Access: 6
                 Type: 17
               - Name: startTime
+                Access: 6
+                Type: 17
+              - Name: bestTime
                 Access: 6
                 Type: 17
               - Name: maxSeconds
@@ -161,11 +201,20 @@ Entities:
                 Value: 0
                 Access: 6
                 Type: 11
+              - Name: platformPosition
+                Access: 6
+                Type: 17
+              - Name: endPosition
+                Access: 6
+                Type: 17
               - Name: swordsCountTextPos
-                Access: 22
+                Access: 6
+                Type: 17
+              - Name: bestTimeTextPos
+                Access: 6
                 Type: 17
               - Name: lerpSpeed
-                Value: 0.00999999978
+                Value: 0.0700000003
                 Access: 6
                 Type: 12
               - Name: lerpTime
@@ -178,6 +227,10 @@ Entities:
                 Type: 2
               - Name: canRespawn
                 Value: false
+                Access: 6
+                Type: 2
+              - Name: showMenu
+                Value: true
                 Access: 6
                 Type: 2
   - Entity: 15466548454261842707
@@ -241,35 +294,14 @@ Entities:
         Shapes:
           - Shape: 0
             MeshUuid: 0
-  - Entity: 725423742878978801
-    Name: Terrain
-    ParentID: 768582904146744010
-    Components:
-      TransformComponent:
-        Position: [0, -49.3885422, 0]
-        Rotation: [1.57079625, -0, 0]
-        Scale: [15000, 20000, 15000]
-      MeshRendererComponent:
-        Uuid: 725423742878978801
-        CastShadows: true
-        AiMeshName: ""
-        MeshName: ""
-        Instanced: true
-        MeshId: 339647705438437641
-        Material: 17611870980403807396
-      ColliderComponent:
-        Uuid: 725423742878978801
-        Shapes:
-          - Shape: 5
-            MeshUuid: 339647705438437641
   - Entity: 11548815623260674483
     Name: Platform
     ParentID: 768582904146744010
     Components:
       TransformComponent:
-        Position: [0, 5.82938099, 478.467529]
+        Position: [0, 5.82938099, 476.451019]
         Rotation: [0, -0, 0]
-        Scale: [25, 1, 25]
+        Scale: [8, 1, 8]
       MeshRendererComponent:
         Uuid: 11548815623260674483
         CastShadows: true
@@ -288,7 +320,7 @@ Entities:
     ParentID: 768582904146744010
     Components:
       TransformComponent:
-        Position: [0, 0, 0]
+        Position: [-1.49011612e-08, -89.9226303, -7.4505806e-09]
         Rotation: [0, -0, 0]
         Scale: [1, 1, 1]
       MeshRendererComponent:
@@ -337,6 +369,27 @@ Entities:
         Uuid: 15079487880645808039
         DynamicLockFlags: 0
         ContinuousDetection: false
+  - Entity: 617073353556031405
+    Name: Cube
+    ParentID: 768582904146744010
+    Components:
+      TransformComponent:
+        Position: [376.659424, -12.3009338, 322.38678]
+        Rotation: [-1.57077134, -1.38460588, -2.57587521e-06]
+        Scale: [900, 900, 900]
+      MeshRendererComponent:
+        Uuid: 617073353556031405
+        CastShadows: true
+        AiMeshName: ""
+        MeshName: ""
+        Instanced: true
+        MeshId: 7908995314450700260
+        Material: 4838878969473706245
+      ColliderComponent:
+        Uuid: 617073353556031405
+        Shapes:
+          - Shape: 5
+            MeshUuid: 7908995314450700260
   - Entity: 1937464305396897141
     Name: TruckPreview
     ParentID: 768582904146744010
@@ -366,13 +419,21 @@ Entities:
         Position: [0, 0, 0]
         Rotation: [0, -0, 0]
         Scale: [1, 1, 1]
+  - Entity: 12987460176953036404
+    Name: BestTimeText
+    ParentID: 768582904146744010
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
   - Entity: 548715691582761659
     Name: SwordSample
     ParentID: 768582904146744010
     Components:
       TransformComponent:
-        Position: [-21.3492317, 8.34521484, -70.3342972]
-        Rotation: [1.57079637, -0, 0]
+        Position: [-21.3492317, -68.1677933, -70.3342972]
+        Rotation: [1.57079625, -0, 0]
         Scale: [700, 700, 700]
       MeshRendererComponent:
         Uuid: 548715691582761659
@@ -393,7 +454,7 @@ Entities:
     Components:
       TransformComponent:
         Position: [0, 0, 0]
-        Rotation: [1.57079637, -1.5701983, 0]
+        Rotation: [1.57079637, -1.57010579, 0]
         Scale: [700, 700, 700]
       MeshRendererComponent:
         Uuid: 13304829543057058501
@@ -405,6 +466,35 @@ Entities:
         Material: 2522693449534569271
   - Entity: 6084306012220815438
     Name: SwordsCountText
+    ParentID: 768582904146744010
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
+  - Entity: 16458016077118387837
+    Name: Cactus1
+    ParentID: 768582904146744010
+    Components:
+      TransformComponent:
+        Position: [162.407959, -272.402679, -14.260397]
+        Rotation: [0, 1.57045102, 0]
+        Scale: [1500, 1500, 1500]
+      MeshRendererComponent:
+        Uuid: 16458016077118387837
+        CastShadows: true
+        AiMeshName: ""
+        MeshName: ""
+        Instanced: true
+        MeshId: 7100729506648566233
+        Material: 8766412231608005275
+      ColliderComponent:
+        Uuid: 16458016077118387837
+        Shapes:
+          - Shape: 5
+            MeshUuid: 7100729506648566233
+  - Entity: 584412377748943343
+    Name: Entity
     ParentID: 768582904146744010
     Components:
       TransformComponent:
@@ -430,6 +520,17 @@ Entities:
                 Value: 0
                 Access: 22
                 Type: 12
+              - Name: staticSwordsEntityUuid
+                Access: 22
+                Type: 21
+              - Name: terrainUuid
+                Value: 0
+                Access: 22
+                Type: 11
+              - Name: cactusSpeed
+                Value: 0
+                Access: 22
+                Type: 12
               - Name: flyingObjects
                 Access: 22
                 Type: 21
@@ -443,21 +544,20 @@ Entities:
               - Name: staticSwordsPosition
                 Access: 22
                 Type: 21
-              - Name: staticSwordsEntityUuid
+              - Name: flyingCactusPositions
                 Access: 22
                 Type: 21
-              - Name: terrainUuid
-                Value: 0
+              - Name: flyingCactusUuids
                 Access: 22
-                Type: 11
+                Type: 21
   - Entity: 753745812364602739
     Name: Cube
     ParentID: 768582904146744010
     Components:
       TransformComponent:
-        Position: [86.2769699, -8.45257568, 0]
+        Position: [171.739014, -8.45257568, 2.98023224e-08]
         Rotation: [-1.57079625, -0, 0]
-        Scale: [500, 500, 500]
+        Scale: [1500, 1500, 1500]
       MeshRendererComponent:
         Uuid: 753745812364602739
         CastShadows: true
@@ -465,7 +565,7 @@ Entities:
         MeshName: ""
         Instanced: true
         MeshId: 7908995314450700260
-        Material: 13617958999397893860
+        Material: 4838878969473706245
       ColliderComponent:
         Uuid: 753745812364602739
         Shapes:
@@ -492,14 +592,35 @@ Entities:
         Shapes:
           - Shape: 5
             MeshUuid: 7908995314450700260
+  - Entity: 10354795711034263299
+    Name: Cube
+    ParentID: 768582904146744010
+    Components:
+      TransformComponent:
+        Position: [-529.607971, 14.8941498, -471.839722]
+        Rotation: [1.40042627, -0.382844627, 2.92338419]
+        Scale: [1200, 1200, 1200]
+      MeshRendererComponent:
+        Uuid: 10354795711034263299
+        CastShadows: true
+        AiMeshName: ""
+        MeshName: ""
+        Instanced: true
+        MeshId: 7908995314450700260
+        Material: 4838878969473706245
+      ColliderComponent:
+        Uuid: 10354795711034263299
+        Shapes:
+          - Shape: 5
+            MeshUuid: 7908995314450700260
   - Entity: 11674902727209610875
     Name: Cube
     ParentID: 768582904146744010
     Components:
       TransformComponent:
-        Position: [-236.148407, -1.33374989, -248.486359]
+        Position: [-273.704071, -16.0065632, -389.03952]
         Rotation: [1.57079625, -0.352556258, -3.1415925]
-        Scale: [500, 500, 500]
+        Scale: [1500, 1500, 1500]
       MeshRendererComponent:
         Uuid: 11674902727209610875
         CastShadows: true
@@ -507,7 +628,7 @@ Entities:
         MeshName: ""
         Instanced: true
         MeshId: 7908995314450700260
-        Material: 13617958999397893860
+        Material: 4838878969473706245
       ColliderComponent:
         Uuid: 11674902727209610875
         Shapes:
@@ -518,9 +639,9 @@ Entities:
     ParentID: 768582904146744010
     Components:
       TransformComponent:
-        Position: [146.189423, 36.3768044, -253.85144]
+        Position: [190.89035, -1.04902077, -259.13269]
         Rotation: [-1.57079422, -1.33692193, 0.143117055]
-        Scale: [500, 500, 500]
+        Scale: [1500, 1500, 1500]
       MeshRendererComponent:
         Uuid: 8284789051424004518
         CastShadows: true
@@ -528,7 +649,7 @@ Entities:
         MeshName: ""
         Instanced: true
         MeshId: 7908995314450700260
-        Material: 13617958999397893860
+        Material: 4838878969473706245
       ColliderComponent:
         Uuid: 8284789051424004518
         Shapes:
@@ -539,9 +660,9 @@ Entities:
     ParentID: 768582904146744010
     Components:
       TransformComponent:
-        Position: [-188.339355, 14.5379086, 270.661774]
+        Position: [-188.339355, 4.79615879, 270.661774]
         Rotation: [1.57079589, -0.755727649, -3.14159226]
-        Scale: [500, 500, 500]
+        Scale: [900, 900, 900]
       MeshRendererComponent:
         Uuid: 10960260917112513207
         CastShadows: true
@@ -549,7 +670,7 @@ Entities:
         MeshName: ""
         Instanced: true
         MeshId: 7908995314450700260
-        Material: 13617958999397893860
+        Material: 4838878969473706245
       ColliderComponent:
         Uuid: 10960260917112513207
         Shapes:
@@ -560,7 +681,7 @@ Entities:
     ParentID: 768582904146744010
     Components:
       TransformComponent:
-        Position: [0, 0, 0]
+        Position: [0, -99.078476, 0]
         Rotation: [0, -0, 0]
         Scale: [1, 1, 1]
   - Entity: 11936758457234036241
@@ -568,7 +689,7 @@ Entities:
     ParentID: 8573830291456401669
     Components:
       TransformComponent:
-        Position: [0, 0, 0]
+        Position: [0, -82.9123001, 1.49011612e-08]
         Rotation: [0, -0, 0]
         Scale: [1, 1, 1]
       MeshRendererComponent:
@@ -579,6 +700,27 @@ Entities:
         Instanced: true
         MeshId: 2
         Material: 1200060769335523276
+  - Entity: 6411979567138070393
+    Name: tower
+    ParentID: 7514399172964846562
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
+      MeshRendererComponent:
+        Uuid: 6411979567138070393
+        CastShadows: true
+        AiMeshName: ""
+        MeshName: ""
+        Instanced: true
+        MeshId: 10419238792194255353
+        Material: 9169800807552402498
+      ColliderComponent:
+        Uuid: 6411979567138070393
+        Shapes:
+          - Shape: 5
+            MeshUuid: 10419238792194255353
   - Entity: 13428733544986842752
     Name: Aim
     ParentID: 6393798526360931090
@@ -605,7 +747,7 @@ Entities:
     ParentID: 768582904146744010
     Components:
       TransformComponent:
-        Position: [0, 0, 0]
+        Position: [0, -72.8310623, 0]
         Rotation: [0, -0, 0]
         Scale: [1, 1, 1]
       MeshRendererComponent:
@@ -634,7 +776,7 @@ Entities:
     ParentID: 768582904146744010
     Components:
       TransformComponent:
-        Position: [0, 0, 0]
+        Position: [0, -80.5466309, -2.98023224e-08]
         Rotation: [0, -0, 0]
         Scale: [1, 1, 1]
       MeshRendererComponent:
@@ -655,7 +797,7 @@ Entities:
     ParentID: 768582904146744010
     Components:
       TransformComponent:
-        Position: [0, 135.347855, 0]
+        Position: [0, -215.104126, 0]
         Rotation: [0, -0, 0]
         Scale: [700, 400, 700]
       MeshRendererComponent:
@@ -665,7 +807,7 @@ Entities:
         MeshName: ""
         Instanced: true
         MeshId: 2454657297450023317
-        Material: 14188819007817503643
+        Material: 13664623482605776890
       ColliderComponent:
         Uuid: 18436662289580177791
         Shapes:
@@ -679,6 +821,98 @@ Entities:
         Position: [0, 0, 0]
         Rotation: [0, -0, 0]
         Scale: [1, 1, 1]
+  - Entity: 8314423832239345107
+    Name: Terrain
+    ParentID: 768582904146744010
+    Components:
+      TransformComponent:
+        Position: [0, -95.7065125, -144.918335]
+        Rotation: [1.57079625, -0, 0]
+        Scale: [30000, 30000, 30000]
+      MeshRendererComponent:
+        Uuid: 8314423832239345107
+        CastShadows: true
+        AiMeshName: ""
+        MeshName: ""
+        Instanced: true
+        MeshId: 12422443147088895776
+        Material: 14622223998386239943
+      ColliderComponent:
+        Uuid: 8314423832239345107
+        Shapes:
+          - Shape: 5
+            MeshUuid: 12422443147088895776
+  - Entity: 9546370866609804124
+    Name: Cube
+    ParentID: 768582904146744010
+    Components:
+      TransformComponent:
+        Position: [376.659424, 85.5443573, -471.161865]
+        Rotation: [1.40042496, -0.38284421, -2.94378948]
+        Scale: [900, 900, 900]
+      MeshRendererComponent:
+        Uuid: 9546370866609804124
+        CastShadows: true
+        AiMeshName: ""
+        MeshName: ""
+        Instanced: true
+        MeshId: 7908995314450700260
+        Material: 4838878969473706245
+      ColliderComponent:
+        Uuid: 9546370866609804124
+        Shapes:
+          - Shape: 5
+            MeshUuid: 7908995314450700260
+  - Entity: 11530822136321112073
+    Name: Cube
+    ParentID: 768582904146744010
+    Components:
+      TransformComponent:
+        Position: [-358.392273, 23.8626747, 90.205864]
+        Rotation: [1.57079589, -0.755727649, -3.14159226]
+        Scale: [1200, 1200, 1200]
+      MeshRendererComponent:
+        Uuid: 11530822136321112073
+        CastShadows: true
+        AiMeshName: ""
+        MeshName: ""
+        Instanced: true
+        MeshId: 7908995314450700260
+        Material: 4838878969473706245
+      ColliderComponent:
+        Uuid: 11530822136321112073
+        Shapes:
+          - Shape: 5
+            MeshUuid: 7908995314450700260
+  - Entity: 12723484322808560298
+    Name: Cube
+    ParentID: 768582904146744010
+    Components:
+      TransformComponent:
+        Position: [526.676819, 84.5289536, 34.1301231]
+        Rotation: [1.57081425, -1.25410581, -2.99847341]
+        Scale: [1500, 1500, 1500]
+      MeshRendererComponent:
+        Uuid: 12723484322808560298
+        CastShadows: true
+        AiMeshName: ""
+        MeshName: ""
+        Instanced: true
+        MeshId: 7908995314450700260
+        Material: 4838878969473706245
+      ColliderComponent:
+        Uuid: 12723484322808560298
+        Shapes:
+          - Shape: 5
+            MeshUuid: 7908995314450700260
+  - Entity: 12864866609409182057
+    Name: SensitivityText
+    ParentID: 768582904146744010
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
 Models:
   - Model: 15985258263282279346
     ModelPath: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Assets\Models\bookModel\book2.plzmod
@@ -686,9 +920,20 @@ Models:
     ModelPath: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Assets\Models\terrains\terrain.plzmod
   - Model: 13852253550065327547
     ModelPath: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Assets\Models\terrains\deadTree.plzmod
+  - Model: 8350930004547357835
+    ModelPath: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Assets\Models\cactus\Cattus_LowPoly.plzmod
   - Model: 3708068673641951050
     ModelPath: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Assets\Models\sword\sword.plzmod
+  - Model: 10857838889308823430
+    ModelPath: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Assets\Models\terrains\terrain2\terrain2.plzmod
+  - Model: 4083901518025559321
+    ModelPath: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Assets\Models\magetower\tower.plzmod
 Meshes:
+  - Mesh: 2337531093440922106
+    MeshId: 2337531093440922106
+    Name: ""
+    TemporaryMesh: false
+    ModelUuid: 14829735431805717965
   - Mesh: 11888746542358569633
     MeshId: 11888746542358569633
     Name: ""
@@ -709,11 +954,6 @@ Meshes:
     Name: ""
     TemporaryMesh: false
     ModelUuid: 14829735431805717965
-  - Mesh: 339647705438437641
-    MeshId: 339647705438437641
-    Name: ""
-    TemporaryMesh: false
-    ModelUuid: 14829735431805717965
   - Mesh: 1
     MeshId: 1
     Name: ""
@@ -721,6 +961,11 @@ Meshes:
     ModelUuid: 14829735431805717965
   - Mesh: 1
     MeshId: 1
+    Name: ""
+    TemporaryMesh: false
+    ModelUuid: 14829735431805717965
+  - Mesh: 7908995314450700260
+    MeshId: 7908995314450700260
     Name: ""
     TemporaryMesh: false
     ModelUuid: 14829735431805717965
@@ -739,6 +984,16 @@ Meshes:
     Name: ""
     TemporaryMesh: false
     ModelUuid: 14829735431805717965
+  - Mesh: 7100729506648566233
+    MeshId: 7100729506648566233
+    Name: ""
+    TemporaryMesh: false
+    ModelUuid: 14829735431805717965
+  - Mesh: 7908995314450700260
+    MeshId: 7908995314450700260
+    Name: ""
+    TemporaryMesh: false
+    ModelUuid: 14829735431805717965
   - Mesh: 7908995314450700260
     MeshId: 7908995314450700260
     Name: ""
@@ -766,6 +1021,11 @@ Meshes:
     ModelUuid: 14829735431805717965
   - Mesh: 2
     MeshId: 2
+    Name: ""
+    TemporaryMesh: false
+    ModelUuid: 14829735431805717965
+  - Mesh: 10419238792194255353
+    MeshId: 10419238792194255353
     Name: ""
     TemporaryMesh: false
     ModelUuid: 14829735431805717965
@@ -786,6 +1046,26 @@ Meshes:
     ModelUuid: 14829735431805717965
   - Mesh: 2454657297450023317
     MeshId: 2454657297450023317
+    Name: ""
+    TemporaryMesh: false
+    ModelUuid: 14829735431805717965
+  - Mesh: 12422443147088895776
+    MeshId: 12422443147088895776
+    Name: ""
+    TemporaryMesh: false
+    ModelUuid: 14829735431805717965
+  - Mesh: 7908995314450700260
+    MeshId: 7908995314450700260
+    Name: ""
+    TemporaryMesh: false
+    ModelUuid: 14829735431805717965
+  - Mesh: 7908995314450700260
+    MeshId: 7908995314450700260
+    Name: ""
+    TemporaryMesh: false
+    ModelUuid: 14829735431805717965
+  - Mesh: 7908995314450700260
+    MeshId: 7908995314450700260
     Name: ""
     TemporaryMesh: false
     ModelUuid: 14829735431805717965
