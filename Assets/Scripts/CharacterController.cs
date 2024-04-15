@@ -99,17 +99,20 @@ public class CharacterController : Entity
         startTime = DateTime.Now;
 
         canRespawn = true;
+
+        FindEntityByName("MusicEntity").GetComponent<AudioSource>().Play();
     }
     public void OnUpdate()
     {
-        // if (showMenu)
-        // {
-        //     if (Input.IsKeyDown(KeyCode.Uknown))
-        //     {
-        //         ReadBook();
-        //         showMenu = false;
-        //     }
-        // }
+         if (showMenu)
+         {
+             if (Input.IsKeyDown(KeyCode.Uknown))
+             {
+                 ReadBook();
+                 showMenu = false;
+             }
+            return;
+         }
         this.GetComponent<TextRenderer>().SetText((maxSeconds - (DateTime.Now - startTime).TotalSeconds).ToString(), 0, 0, 3);
         FindEntityByName("SwordsCountText").GetComponent<TextRenderer>().SetText("Swords: " + swordsCount.ToString(), swordsCountTextPos.X, swordsCountTextPos.Y, 3);
         if (winCount > 0)
@@ -157,27 +160,32 @@ public class CharacterController : Entity
 
     public static void PlayDeathSound()
     {
-
+        InternalCalls.AudioSource_Play(FindEntityByNameCall("DeathSoundEntity"));
     }
 
     public static void PlaySwordSummonSound()
     {
-
+        InternalCalls.AudioSource_Play(FindEntityByNameCall("SwordSummonSoundEntity"));
     }
 
     public static void PlaySwordPointSound()
     {
-       
+        InternalCalls.AudioSource_Play(FindEntityByNameCall("SwordHitSoundEntity"));
     }
 
     public static void PlayFallSound()
     {
-
+        InternalCalls.AudioSource_Play(FindEntityByNameCall("FallSoundEntity"));
     }
 
     public static void PlayWinSound()
     {
+        InternalCalls.AudioSource_Play(FindEntityByNameCall("WinSoundEntity"));
+    }
 
+    public static void PlayPowerSound()
+    {
+        InternalCalls.AudioSource_Play(FindEntityByNameCall("UsePowerSoundEntity"));
     }
 
     public void Win()
@@ -246,6 +254,7 @@ public class CharacterController : Entity
         bool isBallSummonCooldownOver = (lastBallSummonTime - DateTime.Now).TotalSeconds < -0.7f;
         if (isBallSummonCooldownOver && Input.IsMouseDown(1))
         {
+            PlayPowerSound();
             Entity newBall = Instantiate(new Entity(ballToInstantiateUuid));
             newBall.GetComponent<Transform>().Translation = FindEntityByName("CameraEntity").GetComponent<Transform>().Translation + FindEntityByName("Player").GetComponent<Transform>().Translation;//new Entity(hit.hitUuid).GetComponent<Transform>().Translation + hit.point + new Vector3(0.0f, heightSpawn, 0.0f);
 

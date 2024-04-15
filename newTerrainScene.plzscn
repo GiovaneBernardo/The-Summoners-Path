@@ -88,7 +88,7 @@ Entities:
                 Access: 6
                 Type: 2
               - Name: gravity
-                Value: -981
+                Value: -9.81000042
                 Access: 6
                 Type: 12
               - Name: previewUuid
@@ -167,7 +167,7 @@ Entities:
                 Access: 6
                 Type: 11
               - Name: heightSpawn
-                Value: 100
+                Value: 20
                 Access: 6
                 Type: 12
               - Name: lastJumpTime
@@ -186,7 +186,7 @@ Entities:
                 Access: 6
                 Type: 17
               - Name: maxSeconds
-                Value: 60
+                Value: 180
                 Access: 6
                 Type: 8
               - Name: errorMaterialUuid
@@ -213,6 +213,9 @@ Entities:
               - Name: bestTimeTextPos
                 Access: 6
                 Type: 17
+              - Name: sensitivityTextPos
+                Access: 6
+                Type: 17
               - Name: lerpSpeed
                 Value: 0.0700000003
                 Access: 6
@@ -233,6 +236,21 @@ Entities:
                 Value: true
                 Access: 6
                 Type: 2
+  - Entity: 13134684138623118797
+    Name: SwordSummonSoundEntity
+    ParentID: 10007800756297430997
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
+      AudioSourceComponent:
+        Uuid: 13134684138623118797
+        SourcePath: \\\\\Assets\Sounds\summonSwordSound.mp3
+        Gain: 0.00999999978
+        Pitch: 2
+        Spatial: false
+        Loop: false
   - Entity: 15466548454261842707
     Name: book
     ParentID: 7846242250408038473
@@ -265,14 +283,6 @@ Entities:
         Instanced: true
         MeshId: 2239155763765857396
         Material: 6765122244075330397
-  - Entity: 8165271408290502836
-    Name: Entity
-    ParentID: 768582904146744010
-    Components:
-      TransformComponent:
-        Position: [0, 0, 0]
-        Rotation: [0, -0, 0]
-        Scale: [1, 1, 1]
   - Entity: 5224631618254368411
     Name: Cube
     ParentID: 768582904146744010
@@ -294,6 +304,14 @@ Entities:
         Shapes:
           - Shape: 0
             MeshUuid: 0
+  - Entity: 8165271408290502836
+    Name: Entity
+    ParentID: 768582904146744010
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
   - Entity: 11548815623260674483
     Name: Platform
     ParentID: 768582904146744010
@@ -576,7 +594,7 @@ Entities:
     ParentID: 768582904146744010
     Components:
       TransformComponent:
-        Position: [0, 0, 0]
+        Position: [0, -25.9298306, 0]
         Rotation: [0, -0, 0]
         Scale: [1, 1, 1]
       MeshRendererComponent:
@@ -676,6 +694,14 @@ Entities:
         Shapes:
           - Shape: 5
             MeshUuid: 7908995314450700260
+  - Entity: 10007800756297430997
+    Name: SoundsEntity
+    ParentID: 768582904146744010
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
   - Entity: 11565608951690381208
     Name: FlyingObjectPreviewHolder
     ParentID: 768582904146744010
@@ -842,6 +868,21 @@ Entities:
         Shapes:
           - Shape: 5
             MeshUuid: 12422443147088895776
+  - Entity: 12625652768785621401
+    Name: WinSoundEntity
+    ParentID: 10007800756297430997
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
+      AudioSourceComponent:
+        Uuid: 12625652768785621401
+        SourcePath: \\\\\\\Assets\Sounds\winSound.mp3
+        Gain: 0.0500000007
+        Pitch: 1
+        Spatial: false
+        Loop: false
   - Entity: 9546370866609804124
     Name: Cube
     ParentID: 768582904146744010
@@ -890,7 +931,7 @@ Entities:
     Components:
       TransformComponent:
         Position: [526.676819, 84.5289536, 34.1301231]
-        Rotation: [1.57081425, -1.25410581, -2.99847341]
+        Rotation: [1.57081532, -1.25410557, -2.99847436]
         Scale: [1500, 1500, 1500]
       MeshRendererComponent:
         Uuid: 12723484322808560298
@@ -913,6 +954,81 @@ Entities:
         Position: [0, 0, 0]
         Rotation: [0, -0, 0]
         Scale: [1, 1, 1]
+  - Entity: 8009799921486579459
+    Name: FallSoundEntity
+    ParentID: 10007800756297430997
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
+      AudioSourceComponent:
+        Uuid: 8009799921486579459
+        SourcePath: \\\\\Assets\Sounds\fallSound.mp3
+        Gain: 0.150000006
+        Pitch: 1
+        Spatial: false
+        Loop: false
+  - Entity: 11627643523831865723
+    Name: DeathSoundEntity
+    ParentID: 10007800756297430997
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
+      AudioSourceComponent:
+        Uuid: 11627643523831865723
+        SourcePath: \\\\\Assets\Sounds\deathSound.mp3
+        Gain: 0.0500000007
+        Pitch: 1
+        Spatial: false
+        Loop: false
+  - Entity: 6889282408530649007
+    Name: SwordHitSoundEntity
+    ParentID: 10007800756297430997
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
+      AudioSourceComponent:
+        Uuid: 6889282408530649007
+        SourcePath: \\\\\Assets\Sounds\hitSword.mp3
+        Gain: 0.0500000007
+        Pitch: 1
+        Spatial: false
+        Loop: false
+  - Entity: 1155760567257938587
+    Name: MusicEntity
+    ParentID: 10007800756297430997
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
+      AudioSourceComponent:
+        Uuid: 1155760567257938587
+        SourcePath: \\\\Assets\Sounds\music.mp3
+        Gain: 0.0500000007
+        Pitch: 1
+        Spatial: false
+        Loop: true
+  - Entity: 9439302592781127647
+    Name: UsePowerSoundEntity
+    ParentID: 10007800756297430997
+    Components:
+      TransformComponent:
+        Position: [0, 0, 0]
+        Rotation: [0, -0, 0]
+        Scale: [1, 1, 1]
+      AudioSourceComponent:
+        Uuid: 9439302592781127647
+        SourcePath: \\Assets\Sounds\fireballSound.mp3
+        Gain: 0.200000003
+        Pitch: 1.29999995
+        Spatial: false
+        Loop: false
 Models:
   - Model: 15985258263282279346
     ModelPath: C:\Users\Giovane\Desktop\Workspace\PlazaGames\LD55\Assets\Models\bookModel\book2.plzmod

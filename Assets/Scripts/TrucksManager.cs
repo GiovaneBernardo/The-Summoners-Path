@@ -23,8 +23,6 @@ public class TravellerObjectsManager : Entity
 
     public static List<UInt64> flyingCactusUuids = new List<UInt64>();
     public static List<Vector3> flyingCactusPositions = new List<Vector3>();
-
-    public static Random random = new Random();
     public void OnStart()
     {
         terrainUuid = FindEntityByName("Terrain").Uuid;
@@ -152,7 +150,7 @@ public class TravellerObjectsManager : Entity
             cactus.GetComponent<Transform>().Translation = hit.point + new Vector3(30.0f);
             flyingCactusPositions[i] = hit.point + new Vector3(0.0f, 300.0f, 0.0f);
 
-            if (hit.hitUuid == 0 || playerPosition.Z - hit.point.Z < 10.0f) 
+            if (hit.hitUuid == 0 || (playerPosition.Z - hit.point.Z < 10.0f && hit.point.Z > -400.0f)) 
             {
                 RegenerateCactus(i, FindEntityByName("Player").GetComponent<Transform>().Translation);
             }
@@ -161,6 +159,7 @@ public class TravellerObjectsManager : Entity
 
     public static Vector3 GenerateRandomCactusVector()
     {
+        Random random = new Random();
         return new Vector3((float)random.NextDouble() * 650.0f - 325.0f, 100.0f, -500.0f);
     }
 
