@@ -69,6 +69,7 @@ public class CharacterController : Entity
 
     public bool airJumpAvailable = true;
     public int jumpCount = 2;
+    public DateTime lastMuteTime;
     public void OnStart()
     {
         gravity = -9.81f;
@@ -109,6 +110,8 @@ public class CharacterController : Entity
 
         FindEntityByName("MusicEntity").GetComponent<AudioSource>().Play();
     }
+
+    public bool muteMusic = false;
     public void OnUpdate()
     {
          if (showMenu)
@@ -163,6 +166,20 @@ public class CharacterController : Entity
             FindEntityByName("Platform").GetComponent<Transform>().Translation = new Vector3(0.0f, -1000.0f, 0.0f);
             platformIsOnStart = false;
         }
+
+        bool isMuteCoolDownOver = (lastMuteTime - DateTime.Now).TotalSeconds < -0.3f;
+        if (isMuteCoolDownOver && muteMusic && Input.IsKeyDown(KeyCode.M))
+        {
+            FindEntityByName("MusicEntity").GetComponent<AudioSource>().Play();
+            muteMusic = !muteMusic;
+            lastMuteTime = DateTime.Now;
+        }
+        else if (isMuteCoolDownOver && !muteMusic && Input.IsKeyDown(KeyCode.M))
+        {
+            FindEntityByName("MusicEntity").GetComponent<AudioSource>().Stop();
+            muteMusic = !muteMusic;
+            lastMuteTime = DateTime.Now;
+        }
     }
 
     public static void PlayDeathSound()
@@ -198,6 +215,11 @@ public class CharacterController : Entity
     public static void PlayJumpSound()
     {
         InternalCalls.AudioSource_Play(FindEntityByNameCall("JumpSoundEntity"));
+    }
+
+    public static void PlayFailSound()
+    {
+        InternalCalls.AudioSource_Play(FindEntityByNameCall("FailSoundEntity"));
     }
 
     public void Win()
@@ -239,6 +261,8 @@ public class CharacterController : Entity
         }
         else if (hit.hitUuid == terrainUuid)
         {
+            if (CharacterController.swordsCount <= 0 && Input.IsMouseDown(0))
+                PlayFailSound();
             FindEntityByName("FlyingObjectPreviewHolder").GetComponent<Transform>().Translation = hit.point + new Vector3(0.0f, heightSpawn, 0.0f);
 
             /* Calculate yaw */
@@ -264,8 +288,15 @@ public class CharacterController : Entity
     public void ThrowPower()
     {
         bool isBallSummonCooldownOver = (lastBallSummonTime - DateTime.Now).TotalSeconds < -0.7f;
+
         if (isBallSummonCooldownOver && Input.IsMouseDown(1))
         {
+            if (platformIsOnStart)
+            {
+                PlayFailSound();
+                return;
+            }
+
             PlayPowerSound();
             Entity newBall = Instantiate(new Entity(ballToInstantiateUuid));
             newBall.GetComponent<Transform>().Translation = FindEntityByName("CameraEntity").GetComponent<Transform>().Translation + FindEntityByName("Player").GetComponent<Transform>().Translation;//new Entity(hit.hitUuid).GetComponent<Transform>().Translation + hit.point + new Vector3(0.0f, heightSpawn, 0.0f);
@@ -462,7 +493,10 @@ public class CharacterController : Entity
         Quaternion quat = new Quaternion(new Vector3(0.0f, -Input.MouseDeltaX() * sensitivity * Time.deltaTime, 0.0f));
         this.GetComponent<Transform>().Rotation *= quat;
 
-        FindEntityByName("CameraEntity").GetComponent<Transform>().Rotation *= new Quaternion(new Vector3(0.0f, 0.0f, -Input.MouseDeltaY() * sensitivity * Time.deltaTime));
+        Quaternion newRotation = FindEntityByName("CameraEntity").GetComponent<Transform>().Rotation * new Quaternion(new Vector3(0.0f, 0.0f, -Input.MouseDeltaY() * sensitivity * Time.deltaTime));
+        newRotation.z = Clamp(newRotation.z, -45.0f * Mathf.Deg2Rad, 45.0f * Mathf.Deg2Rad);
+
+        FindEntityByName("CameraEntity").GetComponent<Transform>().Rotation = newRotation;
     }
 
     public static float Clamp(float angle, float minAngle, float maxAngle)
